@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies
         run: |
           echo "Installing dependencies.."
-          npm ci  # Corrected
+          npm ci
 
       - name: Install Chrome Dependencies (if needed)
         run: |
@@ -28,4 +28,4 @@ jobs:
       - name: Run Tests
         run: |
           echo "Running tests.."
-          npm test -- --headless --no-sandbox --disable-gpu
+          npx ng test --watch=false --browsers=ChromeHeadless
