@@ -77,4 +77,4 @@ jobs:
         
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/concurrency-converter
+          publish_dir: ./dist/concurrency-converter/browser
