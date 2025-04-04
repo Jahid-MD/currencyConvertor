@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-files
-          path: dist
+          path: dist/concurrency-converter
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
         
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./dist/concurrency-converter
           publish_branch: gh-pages
           publish_repo: ${{ github.repository }}
           commit_message: Deploying to GitHub Pages
