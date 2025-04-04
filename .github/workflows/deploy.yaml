@@ -58,19 +58,42 @@ jobs:
         with:
           name: dist-files
           path: dist
-  deploy:
+    deploy:
     needs: build
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
+
+    environment:
+      name: production
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Download Dist Artifact
-        uses: actions/download-artifact@v4
-        with: 
-          name: dist-files
-          path: dist
-      - name: Deploy to Server
-        run: |
-          echo "Deploying to server.."
-          # Add your deployment commands here, e.g., rsync, scp, etc.
-          # Example using rsync:
-          # rsync -avz dist/ user@your-server:/path/to/deploy
-          echo "Deployment completed."
+      - name: Download to Guthub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          publish_repo: ${{ github.repository }}
+          commit_message: Deploying to GitHub Pages
+  # deploy:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download Dist Artifact
+  #       uses: actions/download-artifact@v4
+  #       with: 
+  #         name: dist-files
+  #         path: dist
+  #     - name: Deploy to Server
+  #       run: |
+  #         echo "Deploying to server.."
+  #         # Add your deployment commands here, e.g., rsync, scp, etc.
+  #         # Example using rsync:
+  #         # rsync -avz dist/ user@your-server:/path/to/deploy
+  #         echo "Deployment completed."
