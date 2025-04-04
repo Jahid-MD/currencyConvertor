@@ -59,7 +59,7 @@ jobs:
           name: dist-files
           path: dist
   deploy:
-    need: build
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download Dist Artifact
