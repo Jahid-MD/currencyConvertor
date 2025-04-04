@@ -1,0 +1,31 @@
+name: Deploying
+on: [push, workflow_dispatch]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Print Node Version
+        run: node -v
+
+      - name: Install Dependencies
+        run: |
+          echo "Installing dependencies.."
+          npm ci  # Corrected
+
+      - name: Install Chrome Dependencies (if needed)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+
+      - name: Run Tests
+        run: |
+          echo "Running tests.."
+          xvfb-run --auto-servernum npm test  # Run Chrome tests in a virtual display
