@@ -78,6 +78,3 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/concurrency-converter
-          publish_branch: gh-pages
-          publish_repo: ${{ github.repository }}
-          commit_message: Deploying to GitHub Pages
