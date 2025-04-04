@@ -29,3 +29,48 @@ jobs:
         run: |
           echo "Running tests.."
           npx ng test --watch=false --browsers=ChromeHeadless
+  
+  build: 
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: |
+          echo "Installing dependencies.."
+          npm ci
+
+      - name: Build Project
+        run: npm run build
+      - name: Upload Dist Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist
+  deploy:
+    need: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Dist Artifact
+        uses: actions/download-artifact@v4
+        with: 
+          name: dist-files
+          path: dist
+      - name: Deploy to Server
+        run: |
+          echo "Deploying to server.."
+          # Add your deployment commands here, e.g., rsync, scp, etc.
+          # Example using rsync:
+          # rsync -avz dist/ user@your-server:/path/to/deploy
+          echo "Deployment completed."
